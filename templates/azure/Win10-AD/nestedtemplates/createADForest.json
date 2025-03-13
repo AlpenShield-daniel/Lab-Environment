@@ -13,6 +13,7 @@
         },
         "domainNetbiosName": {
             "type": "string"
+            "value": "alpenshieldlab"
         },
         "adminUsername": {
             "type": "string"
