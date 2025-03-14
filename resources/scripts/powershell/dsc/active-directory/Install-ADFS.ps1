@@ -6,9 +6,6 @@ configuration Install-ADFS
    (
         [Parameter(Mandatory)]
         [String]$DomainFQDN,
-	
-	[Parameter(Mandatory)]
-        [string]$CertificateThumbprint,
 
         [Parameter(Mandatory)]
         [System.Management.Automation.PSCredential]$AdminCreds,
@@ -31,6 +28,8 @@ configuration Install-ADFS
     # Domain ADFS Admin Creds
     [System.Management.Automation.PSCredential]$DomainAdfsAdminCreds = New-Object System.Management.Automation.PSCredential ("${DomainNetbiosName}\$($AdfsAdminCreds.UserName)", $AdfsAdminCreds.Password)
 
+    $cert = Get-ChildItem -Path "cert:\LocalMachine\My\" -DnsName "$DomainFQDN"
+
     Node localhost
     {
         LocalConfigurationManager 
@@ -52,7 +51,7 @@ configuration Install-ADFS
             FederationServiceName        = $FederationServiceName
             FederationServiceDisplayName = $FederationServiceDisplayName
             OverwriteConfiguration       = $true
-            CertificateThumbprint        = $CertificateThumbprint
+            CertificateThumbprint        = $cert.Thumbprint
             ServiceAccountCredential     = $DomainAdfsAdminCreds
             Credential                   = $DomainAdminCreds
             DependsOn                    = "[WindowsFeature]installADFS"
