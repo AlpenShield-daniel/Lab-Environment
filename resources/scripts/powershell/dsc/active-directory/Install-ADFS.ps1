@@ -29,6 +29,8 @@ configuration Install-ADFS
     [System.Management.Automation.PSCredential]$DomainAdfsAdminCreds = New-Object System.Management.Automation.PSCredential ("${DomainNetbiosName}\$($AdfsAdminCreds.UserName)", $AdfsAdminCreds.Password)
 
     $cert = Get-ChildItem -Path "cert:\LocalMachine\My\" -DnsName "$DomainFQDN"
+    Write-Output "DEBUG: CertificateThumbprint = '$cert.Thumbprint'"
+
 
     Node localhost
     {
